@@ -11,7 +11,7 @@ async function main() {
                 // 1. CONNECT ALL TEAM 4 TEST WALLETS
 
     // instantiate wallet for Joshua
-    const Joshua_Pk = process.env.PRIVATE_KEY_JOSHUA;
+    const Joshua_Pk = process.env.PRIVATE_KEY;
     if(!Joshua_Pk || Joshua_Pk.length <= 0) throw new Error("Missing environment: private key for Joshua");
     const walletJoshua = new ethers.Wallet(Joshua_Pk);
     console.log(`Connected to Joshua's wallet address: ${walletJoshua.address}`);
@@ -27,6 +27,7 @@ async function main() {
     console.log("Attaching to contract ...");
     const coinflipContract = coinflipContractFactory.attach(COINFLIP_CONTRACT_ADDRESS);
     console.log(`Attached to MyToken contract at ${coinflipContract.address}`);
+}
 
 //                 // 4. MINTING TOKENS
 
@@ -77,7 +78,6 @@ async function main() {
 //     console.log(`Minted tokens for ${walletJosh.address} at block ${mintTxReceiptJosh.blockNumber}`);
 //     const tokenBalanceAccountJosh = await tokenContract.balanceOf(walletJosh.address);
 //     console.log(`Address ${walletJosh.address} has a balance of ${ethers.utils.formatEther(tokenBalanceAccountJosh)}\n`);
-// }
 
 main().catch((error) => {
     console.error(error);
