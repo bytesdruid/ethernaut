@@ -25,14 +25,13 @@ async function main() {
     console.log("Attaching to contract ...");
     const coinflipContract = coinflipContractFactory.attach(COINFLIP_CONTRACT_ADDRESS);
     console.log(`Attached to CoinFlip contract at ${coinflipContract.address}`);
-    console.log(coinflipContract)
+    // console.log(coinflipContract)
     const wins = await coinflipContract.consecutiveWins()
     console.log(`number of wins are: ${wins}`)
                 // 4. call the COINFLIP
-
     console.log(`flipping a coin`)
-    const flipTx = await coinflipContract.connect(signerJoshua).flip(true, {gasLimit: value})
-    const receipt = flipTx.wait
+    const flipTx = await coinflipContract.connect(signerJoshua).flip(true)
+    const receipt = await flipTx.wait()
     console.log(receipt)
 }
 
