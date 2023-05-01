@@ -1,8 +1,10 @@
 import { ethers } from "hardhat";
 import { CoinFlip__factory } from "../typechain-types";
+import { BigNumber } from "ethers";
 require("dotenv").config();
 
-const COINFLIP_CONTRACT_ADDRESS = "0xEc8B07414889A0b3Bd3E73ce2d9084463fA8F445";
+const COINFLIP_CONTRACT_ADDRESS = "0xEc8B07414889A0b3Bd3E73ce2d9084463fA8F445"
+const FACTOR = "57896044618658097711785492504343953926634992332820282019728792003956564819968"
 
 async function main() {
 
@@ -29,8 +31,31 @@ async function main() {
     const wins = await coinflipContract.consecutiveWins()
     console.log(`number of wins are: ${wins}`)
                 // 4. call the COINFLIP
+    // figure out if T or F will win
+    const blockNumber = await provider.getBlockNumber() - 1
+    console.log(`block number is: ${blockNumber}`)
+    const block = await provider.getBlock(blockNumber)
+    console.log(`block is: ${block}`)
+    const hash = block.hash
+    console.log(`hash is: ${hash}`)
+    // hash to string
+    const hashString = hash.toString()
+    console.log(`hash string is: ${hashString}`)
+    // hash to int
+    const hashInt = parseInt(hashString)
+    console.log(`integer hash is: ${hashInt}`)
+    // calc what answer should be
+    const coinFlip = hashInt / parseInt(FACTOR)
+    console.log(`coin flip is: ${coinFlip}`)
+    // remove decimals
+    const rounded = Math.trunc(coinFlip)
+    console.log(`rounded number is: ${rounded}`)
+    // set choice
+    const choice = coinFlip == 1 ? true : false
+    console.log(`choice is: ${choice}`)
+    // execute flip of coin
     console.log(`flipping a coin`)
-    const flipTx = await coinflipContract.connect(signerJoshua).flip(true)
+    const flipTx = await coinflipContract.connect(signerJoshua).flip(choice)
     const receipt = await flipTx.wait()
     console.log(receipt)
 }
